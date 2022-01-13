@@ -6,4 +6,8 @@ export default class Hero {
     this.health = 10
     this.inventory = []
   }
+
+  public takeDamage(damage: number): void {
+    this.health -= damage
+  }
 }

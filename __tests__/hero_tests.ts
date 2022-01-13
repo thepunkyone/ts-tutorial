@@ -16,4 +16,15 @@ describe('Hero', () => {
       expect(hero.inventory.length).toBe(0)
     })
   })
+
+  describe('takeDamage', () => {
+    it('reduces hero health by specified amount', () => {
+      const hero: Hero = new Hero()
+      hero.takeDamage(3)
+      expect(hero.health).toBe(7)
+
+      hero.takeDamage(2)
+      expect(hero.health).toBe(5)
+    })
+  })
 })
