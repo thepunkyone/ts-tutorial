@@ -27,4 +27,17 @@ describe('Hero', () => {
       expect(hero.health).toBe(5)
     })
   })
+
+  describe('alive', () => {
+    it('returns true if hero health greater than 0', () => {
+      const hero: Hero = new Hero()
+      expect(hero.alive).toBeTruthy()
+    })
+
+    it('returns false if hero health 0', () => {
+      const hero: Hero = new Hero()
+      hero.health = 0
+      expect(hero.alive).toBeFalsy()
+    })
+  })
 })

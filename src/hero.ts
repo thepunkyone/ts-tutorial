@@ -7,6 +7,10 @@ export default class Hero {
     this.inventory = []
   }
 
+  public get alive(): boolean {
+    return this.health > 0
+  }
+
   public takeDamage(damage: number): void {
     this.health -= damage
   }
