@@ -33,4 +33,16 @@ export default class Hero {
   public pickUp(item: string): void {
     this.inventory.push(item)
   }
+
+  public drop(item: string): void {
+    const itemIsInInventory = this.inventory.includes(item)
+
+    if (!itemIsInInventory) {
+      throw new Error(`${item} is not in inventory!`)
+    }
+
+    const itemIndex = this.inventory.indexOf(item)
+
+    this.inventory.splice(itemIndex, 1)
+  }
 }

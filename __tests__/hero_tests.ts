@@ -78,4 +78,22 @@ describe('Hero', () => {
       expect(hero.inventory).toEqual(['sword'])
     })
   })
+
+  describe('drop', () => {
+    it('removes an item string from hero inventory', () => {
+      const hero: Hero = new Hero()
+
+      hero.inventory = ['sword']
+
+      hero.drop('sword')
+
+      expect(hero.inventory).toEqual([])
+    })
+
+    it('throws an error when trying to remove an item which is not in inventory', () => {
+      const hero: Hero = new Hero()
+
+      expect(() => hero.drop('map')).toThrow('map is not in inventory!')
+    })
+  })
 })
