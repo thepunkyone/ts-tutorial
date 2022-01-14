@@ -29,4 +29,8 @@ export default class Hero {
       this.health += healing
     }
   }
+
+  public pickUp(item: string): void {
+    this.inventory.push(item)
+  }
 }

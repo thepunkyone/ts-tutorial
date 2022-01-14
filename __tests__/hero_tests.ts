@@ -68,4 +68,14 @@ describe('Hero', () => {
       expect(hero.alive).toBeFalsy()
     })
   })
+
+  describe('pickUp', () => {
+    it('adds an item string to hero inventory', () => {
+      const hero: Hero = new Hero()
+
+      hero.pickUp('sword')
+
+      expect(hero.inventory).toEqual(['sword'])
+    })
+  })
 })
