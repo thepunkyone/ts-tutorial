@@ -1,17 +1,32 @@
+const maxHealth = 10
+const minHealth = 0
+
 export default class Hero {
   public health: number
   public inventory: string[]
 
   constructor() {
-    this.health = 10
+    this.health = maxHealth
     this.inventory = []
   }
 
   public get alive(): boolean {
-    return this.health > 0
+    return this.health > minHealth
   }
 
   public takeDamage(damage: number): void {
-    this.health -= damage
+    if (this.health - damage <= minHealth) {
+      this.health = minHealth
+    } else {
+      this.health -= damage
+    }
+  }
+
+  public heal(healing: number): void {
+    if (this.health + healing >= maxHealth) {
+      this.health = maxHealth
+    } else {
+      this.health += healing
+    }
   }
 }
