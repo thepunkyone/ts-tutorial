@@ -43,18 +43,30 @@ describe('Story', () => {
       expect(() => new Story(json)).toThrow(expectedError)
     })
 
-    it('sets the location of story to the start location description', () => {
+    it('sets the location of story to the start location', () => {
+      const story: Story = new Story(storyDataWithStart)
+
+      expect(story.location.title).toBe('start')
+    })
+  })
+
+  describe('location', () => {
+    it('returns healthChange if present', () => {
       const startLocation = JSON.parse(storyDataWithStart)[0]
-      const startDescription = {
-        title: startLocation.title,
-        text: startLocation.text,
-        inventoryChanges: startLocation.inventoryChanges,
-        healthChange: startLocation.healthChange,
-      }
 
       const story: Story = new Story(storyDataWithStart)
 
-      expect(story.location).toEqual(startDescription)
+      expect(story.location.healthChange).toBe(startLocation.healthChange)
+    })
+
+    it('returns inventoryChanges if present', () => {
+      const startLocation = JSON.parse(storyDataWithStart)[0]
+
+      const story: Story = new Story(storyDataWithStart)
+
+      expect(story.location.inventoryChanges).toEqual(
+        startLocation.inventoryChanges
+      )
     })
   })
 })
