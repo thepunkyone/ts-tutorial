@@ -43,12 +43,18 @@ describe('Story', () => {
       expect(() => new Story(json)).toThrow(expectedError)
     })
 
-    xit('sets the location of story to the starting location', () => {
+    it('sets the location of story to the start location description', () => {
       const startLocation = JSON.parse(storyDataWithStart)[0]
+      const startDescription = {
+        title: startLocation.title,
+        text: startLocation.text,
+        inventoryChanges: startLocation.inventoryChanges,
+        healthChange: startLocation.healthChange,
+      }
 
       const story: Story = new Story(storyDataWithStart)
 
-      expect(story.location).toEqual(startLocation)
+      expect(story.location).toEqual(startDescription)
     })
   })
 })

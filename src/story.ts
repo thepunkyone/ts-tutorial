@@ -22,9 +22,16 @@ interface location {
   choices: choice[]
 }
 
+interface description {
+  title: string
+  text: string
+  inventoryChanges?: inventoryChange[]
+  healthChange?: number
+}
+
 export default class Story {
   private locations: location[]
-  // public location: location
+  private currentLocation: location
 
   constructor(storyData: string) {
     this.locations = JSON.parse(storyData)
@@ -37,6 +44,15 @@ export default class Story {
       throw new Error('story does not have a start')
     }
 
-    // this.location = this.locations[0]
+    this.currentLocation = startingLocation
+  }
+
+  public get location(): description {
+    return {
+      title: this.currentLocation.title,
+      text: this.currentLocation.text,
+      inventoryChanges: this.currentLocation.inventoryChanges,
+      healthChange: this.currentLocation.healthChange,
+    }
   }
 }
