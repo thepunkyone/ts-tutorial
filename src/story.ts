@@ -56,7 +56,20 @@ export default class Story {
     }
   }
 
-  public getChoices(): choice[] {
+  public getChoices(heroInventory?: string[]): choice[] {
+    if (heroInventory) {
+      const matchingLock =
+        this.currentLocation.locks?.find((lock) =>
+          heroInventory.includes(lock.key)
+        ) || undefined
+
+      if (!matchingLock) {
+        return this.currentLocation.choices
+      }
+
+      return matchingLock.choices
+    }
+
     return this.currentLocation.choices
   }
 }

@@ -21,6 +21,35 @@ const storyDataWithStart = `[
   }
 ]`
 
+const storyDataWithChoices = `[
+  {
+    "title": "start",
+    "text": "Welcome adventurer. Your adventure begins, as many do, in Ye Olde Inn.",
+    "inventoryChanges": [
+      {
+        "action": "pickUp",
+        "item": "gold coins"
+      }
+    ],
+    "healthChange": 0,
+    "locks": [
+      {
+        "key": "key",
+        "choices": {
+          "label": "Enter",
+          "target": "back room"
+        }
+      }
+    ],
+    "choices": [
+      {
+        "label": "Continue",
+        "target": "inn"
+      }
+    ]
+  }
+]`
+
 describe('Story', () => {
   describe('constructor', () => {
     it('returns a new instance of Story', () => {
@@ -77,6 +106,18 @@ describe('Story', () => {
       const story: Story = new Story(storyDataWithStart)
 
       expect(story.getChoices()).toEqual(startLocation.choices)
+    })
+
+    it('takes an optional inventory array and returns unlocked choices', () => {
+      const heroInventoryWithKey = ['key']
+
+      const startLocation = JSON.parse(storyDataWithChoices)[0]
+
+      const story: Story = new Story(storyDataWithChoices)
+
+      expect(story.getChoices(heroInventoryWithKey)).toEqual(
+        startLocation.locks[0].choices
+      )
     })
   })
 })
