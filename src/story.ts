@@ -56,20 +56,37 @@ export default class Story {
     }
   }
 
-  public getChoices(heroInventory?: string[]): choice[] {
-    if (heroInventory) {
-      const matchingLock =
-        this.currentLocation.locks?.find((lock) =>
-          heroInventory.includes(lock.key)
-        ) || undefined
+  public getChoices(inventory: string[] = []): choice[] {
+    let choices: choice[] = [...this.currentLocation.choices]
+    if (this.currentLocation.locks) {
+      this.currentLocation.locks.forEach((lock) => {
+        if (inventory.indexOf(lock.key) > -1) {
+          choices = choices.concat(lock.choices)
+        }
+      })
+    }
+    return choices
+  }
 
-      if (!matchingLock) {
-        return this.currentLocation.choices
-      }
+  public choose(input: string, heroInventory: string[]): void {
+    const choices = this.getChoices(heroInventory)
 
-      return matchingLock.choices
+    const choice: choice | undefined = choices.find(
+      (c) => c.label.toLowerCase() === input.toLowerCase()
+    )
+
+    if (!choice) {
+      throw new Error(`choice "${input}" does not exist`)
     }
 
-    return this.currentLocation.choices
+    const chosenLocation: location | undefined = this.locations.find(
+      (location) => location.title === choice.target
+    )
+
+    if (!chosenLocation) {
+      throw new Error(`location "${choice.target}" does not exist`)
+    }
+
+    this.currentLocation = chosenLocation
   }
 }

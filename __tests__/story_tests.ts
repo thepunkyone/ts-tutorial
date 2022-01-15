@@ -50,6 +50,96 @@ const storyDataWithChoices = `[
   }
 ]`
 
+const storyDataWithThreeLocations = `[
+  {
+    "title": "start",
+    "text": "Welcome adventurer. Your adventure begins, as many do, in Ye Olde Inn.",
+    "inventoryChanges": [
+      {
+        "action": "pickUp",
+        "item": "gold coins"
+      }
+    ],
+    "healthChange": 0,
+    "locks": [
+      {
+        "key": "key",
+        "choices": {
+          "label": "Enter",
+          "target": "back room"
+        }
+      },
+       {
+        "key": "secret",
+        "choices": {
+          "label": "Read",
+          "target": "magic book"
+        }
+      }
+    ],
+    "choices": [
+      {
+        "label": "Continue",
+        "target": "inn"
+      }
+    ]
+  },
+ 
+   {
+    "title": "inn",
+    "text": "Shall we get some beers.",
+    "inventoryChanges": [
+      {
+        "action": "pickUp",
+        "item": "key"
+      }
+    ],
+    "healthChange": 0,
+    "locks": [
+      {
+        "key": "key",
+        "choices": {
+          "label": "Enter",
+          "target": "back room"
+        }
+      }
+    ],
+    "choices": [
+      {
+        "label": "Continue",
+        "target": "market"
+      }
+    ]
+  },
+  
+   {
+    "title": "back room",
+    "text": "Something dodgy is going on here.",
+    "inventoryChanges": [
+      {
+        "action": "pickUp",
+        "item": "book of magic"
+      }
+    ],
+    "healthChange": 0,
+    "locks": [
+      {
+        "key": "book of magic",
+        "choices": {
+          "label": "Enter",
+          "target": "mystery portal"
+        }
+      }
+    ],
+    "choices": [
+      {
+        "label": "Continue",
+        "target": "market"
+      }
+    ]
+  }
+]`
+
 describe('Story', () => {
   describe('constructor', () => {
     it('returns a new instance of Story', () => {
@@ -115,9 +205,46 @@ describe('Story', () => {
 
       const story: Story = new Story(storyDataWithChoices)
 
-      expect(story.getChoices(heroInventoryWithKey)).toEqual(
-        startLocation.locks[0].choices
+      expect(story.getChoices(heroInventoryWithKey)).toEqual([
+        ...startLocation.choices,
+        startLocation.locks[0].choices,
+      ])
+    })
+  })
+
+  describe('choose', () => {
+    const heroInventory = ['key', 'secret']
+
+    it('throws an error if choice does not exist', () => {
+      const story: Story = new Story(storyDataWithThreeLocations)
+
+      expect(() => story.choose('i dont exist', heroInventory)).toThrowError(
+        'choice "i dont exist" does not exist'
       )
+    })
+
+    it('throws an error if choice target does not exist', () => {
+      const story: Story = new Story(storyDataWithThreeLocations)
+
+      expect(() => story.choose('Read', heroInventory)).toThrowError(
+        'location "magic book" does not exist'
+      )
+    })
+
+    it('takes the choice label and updates the story location', () => {
+      const story: Story = new Story(storyDataWithThreeLocations)
+
+      story.choose('Continue', heroInventory)
+
+      expect(story.location.title).toEqual('inn')
+    })
+
+    it('is case insensitive', () => {
+      const story: Story = new Story(storyDataWithThreeLocations)
+
+      story.choose('continue', heroInventory)
+
+      expect(story.location.title).toEqual('inn')
     })
   })
 })
