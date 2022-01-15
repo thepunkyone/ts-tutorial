@@ -55,4 +55,8 @@ export default class Story {
       healthChange: this.currentLocation.healthChange,
     }
   }
+
+  public getChoices(): choice[] {
+    return this.currentLocation.choices
+  }
 }

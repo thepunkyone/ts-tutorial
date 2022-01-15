@@ -69,4 +69,14 @@ describe('Story', () => {
       )
     })
   })
+
+  describe('getChoices', () => {
+    it('returns an array of choices', () => {
+      const startLocation = JSON.parse(storyDataWithStart)[0]
+
+      const story: Story = new Story(storyDataWithStart)
+
+      expect(story.getChoices()).toEqual(startLocation.choices)
+    })
+  })
 })
