@@ -31,6 +31,26 @@ export default class Game {
   constructor(story: story, hero: hero) {
     this.story = story
     this.hero = hero
+
+    this.updateHero()
+  }
+
+  public update(input: string): void {
+    this.story.choose(input, this.hero.inventory)
+
+    this.updateHero()
+  }
+
+  private updateHero(): void {
+    const { healthChange } = this.story.location
+
+    if (healthChange && healthChange < 0) {
+      this.hero.takeDamage(Math.abs(healthChange))
+    }
+
+    if (healthChange && healthChange > 0) {
+      this.hero.heal(Math.abs(healthChange))
+    }
   }
 
   public get state(): gameState {
