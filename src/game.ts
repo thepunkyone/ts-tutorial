@@ -16,6 +16,14 @@ export interface hero {
   drop: (item: string) => void
 }
 
+interface gameState {
+  title: string
+  text: string
+  choices: choice[]
+  health: number
+  inventory: string[]
+}
+
 export default class Game {
   private story: story
   private hero: hero
@@ -23,5 +31,15 @@ export default class Game {
   constructor(story: story, hero: hero) {
     this.story = story
     this.hero = hero
+  }
+
+  public get state(): gameState {
+    return {
+      title: this.story.location.title,
+      text: this.story.location.text,
+      choices: this.story.getChoices(this.hero.inventory),
+      health: this.hero.health,
+      inventory: this.hero.inventory,
+    }
   }
 }
