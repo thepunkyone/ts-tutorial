@@ -8,7 +8,7 @@ interface inventoryChange {
   item: string
 }
 
-interface choice {
+export interface choice {
   label: string
   target: string
 }
@@ -22,7 +22,7 @@ interface location {
   choices: choice[]
 }
 
-interface description {
+export interface description {
   title: string
   text: string
   inventoryChanges?: inventoryChange[]
