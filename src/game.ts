@@ -42,7 +42,7 @@ export default class Game {
   }
 
   private updateHero(): void {
-    const { healthChange } = this.story.location
+    const { healthChange, inventoryChanges } = this.story.location
 
     if (healthChange && healthChange < 0) {
       this.hero.takeDamage(Math.abs(healthChange))
@@ -50,6 +50,12 @@ export default class Game {
 
     if (healthChange && healthChange > 0) {
       this.hero.heal(Math.abs(healthChange))
+    }
+
+    if (inventoryChanges) {
+      inventoryChanges.forEach((change) => {
+        this.hero[change.action](change.item)
+      })
     }
   }
 

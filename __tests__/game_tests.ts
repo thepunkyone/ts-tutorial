@@ -202,5 +202,101 @@ describe('Game', () => {
         ],
       })
     })
+
+    it('adds picked up items to hero inventory', () => {
+      const story: story = {
+        getChoices: jest.fn(() => [
+          {
+            label: 'choice',
+            target: 'newLocation',
+          },
+        ]),
+        choose: jest.fn(
+          () =>
+            (story.location = {
+              title: 'newLocationTitle',
+              text: 'newLocationText',
+              inventoryChanges: [{ action: 'pickUp', item: 'sword' }],
+            })
+        ),
+        location: { title: 'locationTitle', text: 'locationText' },
+      }
+      const hero: hero = {
+        inventory: ['keys'],
+        health: 10,
+        alive: true,
+        heal: jest.fn((health: number) => {
+          hero.health += health
+        }),
+        takeDamage: jest.fn(),
+        pickUp: jest.fn((item) => (hero.inventory = ['keys', item])),
+        drop: jest.fn(),
+      }
+      const game: Game = new Game(story, hero)
+
+      game.update('choice')
+
+      expect(game.state).toEqual({
+        title: 'newLocationTitle',
+        text: 'newLocationText',
+        inventory: ['keys', 'sword'],
+        health: 10,
+        choices: [
+          {
+            label: 'choice',
+            target: 'newLocation',
+          },
+        ],
+      })
+    })
+
+    it('removes dropped items to hero inventory', () => {
+      const story: story = {
+        getChoices: jest.fn(() => [
+          {
+            label: 'choice',
+            target: 'newLocation',
+          },
+        ]),
+        choose: jest.fn(
+          () =>
+            (story.location = {
+              title: 'newLocationTitle',
+              text: 'newLocationText',
+              inventoryChanges: [{ action: 'drop', item: 'sword' }],
+            })
+        ),
+        location: { title: 'locationTitle', text: 'locationText' },
+      }
+      const hero: hero = {
+        inventory: ['keys', 'sword'],
+        health: 10,
+        alive: true,
+        heal: jest.fn((health: number) => {
+          hero.health += health
+        }),
+        takeDamage: jest.fn(),
+        pickUp: jest.fn(),
+        drop: jest.fn(
+          (item) => (hero.inventory = hero.inventory.filter((i) => i !== item))
+        ),
+      }
+      const game: Game = new Game(story, hero)
+
+      game.update('choice')
+
+      expect(game.state).toEqual({
+        title: 'newLocationTitle',
+        text: 'newLocationText',
+        inventory: ['keys'],
+        health: 10,
+        choices: [
+          {
+            label: 'choice',
+            target: 'newLocation',
+          },
+        ],
+      })
+    })
   })
 })
