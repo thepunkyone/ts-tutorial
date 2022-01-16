@@ -298,5 +298,48 @@ describe('Game', () => {
         ],
       })
     })
+
+    it('sets state to Game Over if hero is dead', () => {
+      const story: story = {
+        getChoices: jest.fn(() => [
+          {
+            label: 'choice',
+            target: 'newLocation',
+          },
+        ]),
+        choose: jest.fn(
+          () =>
+            (story.location = {
+              title: 'newLocationTitle',
+              text: 'newLocationText',
+              healthChange: -2,
+            })
+        ),
+        location: { title: 'locationTitle', text: 'locationText' },
+      }
+      const hero: hero = {
+        inventory: ['keys'],
+        health: 2,
+        alive: true,
+        heal: jest.fn(),
+        takeDamage: jest.fn((health: number) => {
+          hero.health -= health
+          hero.alive = !!hero.health
+        }),
+        pickUp: jest.fn(),
+        drop: jest.fn(),
+      }
+      const game: Game = new Game(story, hero)
+
+      game.update('choice')
+
+      expect(game.state).toEqual({
+        title: 'Game Over',
+        text: 'You died from your injuries...',
+        inventory: ['keys'],
+        health: 0,
+        choices: [],
+      })
+    })
   })
 })

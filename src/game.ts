@@ -60,12 +60,22 @@ export default class Game {
   }
 
   public get state(): gameState {
-    return {
-      title: this.story.location.title,
-      text: this.story.location.text,
-      choices: this.story.getChoices(this.hero.inventory),
-      health: this.hero.health,
-      inventory: this.hero.inventory,
+    if (this.hero.alive) {
+      return {
+        title: this.story.location.title,
+        text: this.story.location.text,
+        choices: this.story.getChoices(this.hero.inventory),
+        health: this.hero.health,
+        inventory: this.hero.inventory,
+      }
+    } else {
+      return {
+        title: 'Game Over',
+        text: 'You died from your injuries...',
+        choices: [],
+        health: this.hero.health,
+        inventory: this.hero.inventory,
+      }
     }
   }
 }
