@@ -1,0 +1,73 @@
+[
+  {
+    "title": "start",
+    "text": "Welcome adventurer. Your adventure begins, as many do, in Ye Olde Inn.",
+    "inventoryChanges": [
+      {
+        "action": "pickUp",
+        "item": "gold coins"
+      }
+    ],
+    "healthChange": 0,
+    "locks": [],
+    "choices": [
+      {
+        "label": "Continue",
+        "target": "inn"
+      }
+    ]
+  },
+  {
+    "title": "inn",
+    "text": "This is a peaceful, happy inn with plentiful drink, tasty food, and friendly staff.",
+    "inventoryChanges": [],
+    "healthChange": 0,
+    "locks": [
+      {
+        "key": "gold coins",
+        "choices": [
+          {
+            "label": "Order an Ale",
+            "target": "getting drunk"
+          }
+        ]
+      }
+    ],
+    "choices": [
+      {
+        "label": "Stay",
+        "target": "inn"
+      },
+      {
+        "label": "Go",
+        "target": "cave entrance"
+      }
+    ]
+  },
+  {
+    "title": "getting drunk",
+    "text": "You spend all your money on ale and wake up the next morning with a hangover.",
+    "inventoryChanges": [
+      {
+        "action": "drop",
+        "item": "gold coins"
+      },
+      {
+        "action": "pickUp",
+        "item": "hangover"
+      }
+    ],
+    "healthChange": -1,
+    "locks": [],
+    "choices": [
+      {
+        "label": "Stay",
+        "target": "inn"
+      },
+      {
+        "label": "Go",
+        "target": "cave entrance"
+      }
+    ]
+  }
+]
